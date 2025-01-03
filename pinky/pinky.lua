@@ -1,4 +1,20 @@
-if getgenv().pinky then warn("Pinky Hub : Already executed!") return end
+[13:33, 13/12/2024] Adam Aupov: if getgenv().pinky then warn("Pinky Hub : Already executed!") return end
+getgenv().pinky = true
+
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local DeviceType = game:GetService("UserInputService").TouchEnabled and "Mobile" or "PC"
+if DeviceType == "Mobile" then
+    local ClickButton = Instance.new("ScreenGui")
+    local MainFrame = Instance.new("Frame")
+ …
+[13:38, 13/12/2024] Adam Aupov: if getgenv().pinky then warn("Pinky Hub : Already executed!") return end
 getgenv().pinky = true
 
 if not game:IsLoaded() then
@@ -25,8 +41,8 @@ if DeviceType == "Mobile" then
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = ClickButton
     MainFrame.AnchorPoint = Vector2.new(1, 0)
-    MainFrame.BackgroundTransparency = 0.2
-    MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    MainFrame.BackgroundTransparency = 0.8
+    MainFrame.BackgroundColor3 = Color3.fromRGB(38, 38, 38) 
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(1, -60, 0, 10)
     MainFrame.Size = UDim2.new(0, 45, 0, 45)
@@ -52,55 +68,25 @@ if DeviceType == "Mobile" then
     TextButton.Position = UDim2.new(0, 0, 0, 0)
     TextButton.Size = UDim2.new(0, 45, 0, 45)
     TextButton.AutoButtonColor = false
-    TextButton.Font = Enum.Font.GothamBold
+    TextButton.Font = Enum.Font.SourceSans
     TextButton.Text = "Open"
-    TextButton.TextColor3 = Color3.fromRGB(255, 128, 255)
-    TextButton.TextSize = 18
+    TextButton.TextColor3 = Color3.new(220, 125, 255)
+    TextButton.TextSize = 20
 
     TextButton.MouseButton1Click:Connect(function()
         game:GetService("VirtualInputManager"):SendKeyEvent(true, "LeftControl", false, game)
         game:GetService("VirtualInputManager"):SendKeyEvent(false, "LeftControl", false, game)
     end)
-
-    local UIGradient = Instance.new("UIGradient")
-    UIGradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 128, 255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 90, 180))
-    })
-    UIGradient.Rotation = 45
-    UIGradient.Parent = MainFrame
-
-    local Glow = Instance.new("ImageLabel")
-    Glow.Name = "Glow"
-    Glow.BackgroundTransparency = 1
-    Glow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Glow.Size = UDim2.new(1.5, 0, 1.5, 0)
-    Glow.AnchorPoint = Vector2.new(0.5, 0.5)
-    Glow.Image = "rbxassetid://7131946098"
-    Glow.ImageColor3 = Color3.fromRGB(255, 128, 255)
-    Glow.ImageTransparency = 0.5
-    Glow.Parent = MainFrame
 end
 
 local Window = Fluent:CreateWindow({
-    Title = game:GetService("MarketplaceService"):GetProductInfo(16732694052).Name .." | Pinky God",
-    SubTitle = "God Edition | discord.gg/7mqfkyxA",
-    TabWidth = 170,
-    Size = UDim2.fromOffset(650, 520),
-    Acrylic = false,
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl,
-    ButtonPreset = "Custom",
-    Buttons = {
-        {
-            Text = "Discord",
-            RichText = true,
-            TextColor3 = Color3.fromRGB(255, 100, 255),
-            Callback = function() 
-                setclipboard("discord.gg/7mqfkyxA")
-            end
-        }
-    }
+    Title = game:GetService("MarketplaceService"):GetProductInfo(16732694052).Name .." | Pinky - Premium",
+    SubTitle = "",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Rose",
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
 
 -- // // // Services // // // --
@@ -128,15 +114,6 @@ local NpcFolder = Workspace:FindFirstChild("world"):WaitForChild("npcs")
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local screenGui = Instance.new("ScreenGui", PlayerGui)
 local shadowCountLabel = Instance.new("TextLabel", screenGui)
-shadowCountLabel.Size = UDim2.new(0, 280, 0, 70)
-shadowCountLabel.Position = UDim2.new(0, 30, 0, 260)
-shadowCountLabel.BackgroundTransparency = 0
-shadowCountLabel.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-shadowCountLabel.TextColor3 = Color3.fromRGB(255, 100, 255)
-shadowCountLabel.Font = Enum.Font.GothamBold
-shadowCountLabel.TextSize = 24
-shadowCountLabel.Text = "Shadow Count: 0"
-shadowCountLabel.Visible = false
 local RenderStepped = RunService.RenderStepped
 local WaitForSomeone = RenderStepped.Wait
 
@@ -154,23 +131,62 @@ local DayOnlyLoop = nil
 local BypassGpsLoop = nil
 local Noclip = false
 local RunCount = false
+local ModUsernames = {
+    "do_big", "Nate", "iJava", "do_small", "SERVERQAMANAGER", "Amber", 
+    "VantagePointWest", "Kusanagi", "Adam", "Awoken", "Kelven", "yHasteedD",
+    "pingu", "anonrlc", "Echidenpai", "aerophobes", "Uzerk", "Neli", 
+    "zSkanzRbx", "Thynkle", "Hato", "Plutoly", "Kyle", "number6", "kwijt",
+    "CarbonMeister", "ooo", "enryu", "R0bustic", "Light_guy3535", "yvlyf",
+    "maji", "kazer", "puly", "Ta1kk", "rey", "Asiany", "Alp", "Green",
+    "Vel", "FruetLoops", "Adrianex6000", "Phoevri", "runker", "glu",
+    "Ellis", "ifalldownsomestairs", "ccrowsss", "Buildaroo", "poisonedkebab",
+    "Ragu", "lou", "Blubbivies", "lee", "StarMish", "Kuro"
+}
 
 -- // // // Functions // // // --
 function ShowNotification(String)
     Fluent:Notify({
-        Title = "Pinky God",
+        Title = "Pinky Hub",
         Content = String,
-        Duration = 3,
-        Theme = "Dark",
-        TitleColor = Color3.fromRGB(255, 100, 255),
-        Icon = "rbxassetid://7072718412",
-        Actions = {
-            Ignore = {
-                Name = "OK",
-                Callback = function() end
-            }
-        }
+        Duration = 5
     })
+end
+
+local ModDetectionEnabled = false
+local function CheckForMods()
+    for _, player in pairs(Players:GetPlayers()) do
+        if table.find(ModUsernames, player.Name) or table.find(ModUsernames, player.DisplayName) then
+            ShowNotification("⚠️ Mod Detected: " .. player.Name .. "\nLeaving...")
+            task.wait(0.5)
+            Players.LocalPlayer:Kick("\nMod detected: " .. player.Name)
+            task.wait(0.5)
+            game:Shutdown()
+            return true
+        end
+    end
+    return false
+end
+
+local modCheckConnection
+local function StartModDetection()
+    if modCheckConnection then return end
+    if CheckForMods() then return end
+    modCheckConnection = Players.PlayerAdded:Connect(function(player)
+        if table.find(ModUsernames, player.Name) or table.find(ModUsernames, player.DisplayName) then
+            ShowNotification("⚠️ Mod Detected: " .. player.Name .. "\nLeaving...")
+            task.wait(0.5)
+            Players.LocalPlayer:Kick("\nMod detected: " .. player.Name)
+            task.wait(0.5)
+            game:Shutdown()
+        end
+    end)
+end
+
+local function StopModDetection()
+    if modCheckConnection then
+        modCheckConnection:Disconnect()
+        modCheckConnection = nil
+    end
 end
 
 -- // Sending Execution To Discord // --
@@ -239,48 +255,45 @@ local function autoCast()
 end
 
 -- // // // Auto Shake // // // --
-local autoShakeEnabled = true -- Set to true to enable auto-shake
+local autoShakeEnabled = false
 local autoShakeConnection
-local ShakeMode = "Navigation" -- Choose between "Navigation" or "Mouse"
-
 local function autoShake()
     if ShakeMode == "Navigation" then
-        pcall(function()
+        task.wait()
+        xpcall(function()
             local shakeui = PlayerGui:FindFirstChild("shakeui")
             if not shakeui then return end
             local safezone = shakeui:FindFirstChild("safezone")
             local button = safezone and safezone:FindFirstChild("button")
-            if button then
-                -- Simulate button press using GuiService
-                GuiService.SelectedObject = button
-                task.wait(0.1) -- Reduced wait time for better responsiveness
+            task.wait(0.2)
+            GuiService.SelectedObject = button
+            if GuiService.SelectedObject == button then
                 VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
                 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
-                GuiService.SelectedObject = nil -- Clear selected object after press
             end
+            task.wait(0.1)
+            GuiService.SelectedObject = nil
+        end,function (err)
         end)
     elseif ShakeMode == "Mouse" then
-        pcall(function()
+        task.wait()
+        xpcall(function()
             local shakeui = PlayerGui:FindFirstChild("shakeui")
             if not shakeui then return end
             local safezone = shakeui:FindFirstChild("safezone")
             local button = safezone and safezone:FindFirstChild("button")
-            if button then
-                -- Simulate mouse click on button
-                local pos = button.AbsolutePosition
-                local size = button.AbsoluteSize
-                local centerX, centerY = pos.X + size.X / 2, pos.Y + size.Y / 2
-                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, true, game, 0)
-                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, game, 0)
-            end
+            local pos = button.AbsolutePosition
+            local size = button.AbsoluteSize
+            VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, true, LocalPlayer, 0)
+            VirtualInputManager:SendMouseButtonEvent(pos.X + size.X / 2, pos.Y + size.Y / 2, 0, false, LocalPlayer, 0)
+        end,function (err)
         end)
     end
 end
 
 local function startAutoShake()
     if autoShakeConnection or not autoShakeEnabled then return end
-    -- Use Heartbeat for smoother execution instead of RenderStepped
-    autoShakeConnection = RunService.Heartbeat:Connect(autoShake)
+    autoShakeConnection = RunService.RenderStepped:Connect(autoShake)
 end
 
 local function stopAutoShake()
@@ -290,42 +303,43 @@ local function stopAutoShake()
     end
 end
 
--- Automatically start/stop auto-shake based on GUI changes
 PlayerGui.DescendantAdded:Connect(function(descendant)
     if autoShakeEnabled and descendant.Name == "button" and descendant.Parent and descendant.Parent.Name == "safezone" then
         startAutoShake()
     end
 end)
 
-PlayerGui.DescendantRemoving:Connect(function(descendant)
-    if descendant.Name == "button" and descendant.Parent and descendant.Parent.Name == "safezone" then
+PlayerGui.DescendantAdded:Connect(function(descendant)
+    if descendant.Name == "playerbar" and descendant.Parent and descendant.Parent.Name == "bar" then
         stopAutoShake()
     end
 end)
 
--- Initial check for shake UI
-task.defer(function()
-    local shakeui = PlayerGui:FindFirstChild("shakeui")
-    local safezone = shakeui and shakeui:FindFirstChild("safezone")
-    local button = safezone and safezone:FindFirstChild("button")
-    if autoShakeEnabled and button then
-        startAutoShake()
-    end
-end)
-
+if autoShakeEnabled and PlayerGui:FindFirstChild("shakeui") and PlayerGui.shakeui:FindFirstChild("safezone") and PlayerGui.shakeui.safezone:FindFirstChild("button") then
+    startAutoShake()
+end
 
 -- // // // Auto Reel // // // --
 local autoReelEnabled = false
 local PerfectCatchEnabled = false
 local autoReelConnection
 local function autoReel()
-    local reel = PlayerGui:FindFirstChild("reel")
-    if not reel then return end
-    local bar = reel:FindFirstChild("bar")
-    local playerbar = bar and bar:FindFirstChild("playerbar")
-    local fish = bar and bar:FindFirstChild("fish")
-    if playerbar and fish then
-        playerbar.Position = fish.Position
+    if ReelMode == "Legit" then
+        local reel = PlayerGui:FindFirstChild("reel")
+        if not reel then return end
+        local bar = reel:FindFirstChild("bar")
+        local playerbar = bar and bar:FindFirstChild("playerbar")
+        local fish = bar and bar:FindFirstChild("fish")
+        if playerbar and fish then
+            playerbar.Position = fish.Position
+        end
+    elseif ReelMode == "Blatant" then
+        local reel = PlayerGui:FindFirstChild("reel")
+        if not reel then return end
+        local bar = reel:FindFirstChild("bar")
+        local playerbar = bar and bar:FindFirstChild("playerbar")
+        playerbar:GetPropertyChangedSignal('Position'):Wait()
+        game.ReplicatedStorage:WaitForChild("events"):WaitForChild("reelfinished"):FireServer(100, false)
     end
 end
 
@@ -341,19 +355,10 @@ local function noperfect()
 end
 
 local function startAutoReel()
-    if ReelMode == "Legit" then
-        if autoReelConnection or not autoReelEnabled then return end
-        noperfect()
-        task.wait(2)
-        autoReelConnection = RunService.RenderStepped:Connect(autoReel)
-    elseif ReelMode == "Blatant" then
-        local reel = PlayerGui:FindFirstChild("reel")
-        if not reel then return end
-        local bar = reel:FindFirstChild("bar")
-        local playerbar = bar and bar:FindFirstChild("playerbar")
-        playerbar:GetPropertyChangedSignal('Position'):Wait()
-        game.ReplicatedStorage:WaitForChild("events"):WaitForChild("reelfinished"):FireServer(100, false)
-    end
+    if autoReelConnection or not autoReelEnabled then return end
+    noperfect()
+    task.wait(2)
+    autoReelConnection = RunService.RenderStepped:Connect(autoReel)
 end
 
 local function stopAutoReel()
@@ -571,63 +576,17 @@ end)
 
 -- // // // Exclusives // // // --
 local shadowCountLabel = Instance.new("TextLabel", screenGui)
-shadowCountLabel.Size = UDim2.new(0, 280, 0, 70)
+shadowCountLabel.Size = UDim2.new(0, 200, 0, 50)
 shadowCountLabel.Position = UDim2.new(0, 30, 0, 260)
-shadowCountLabel.BackgroundTransparency = 0
-shadowCountLabel.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-shadowCountLabel.TextColor3 = Color3.fromRGB(255, 100, 255)
-shadowCountLabel.Font = Enum.Font.GothamBold
+shadowCountLabel.BackgroundTransparency = 0.5
+shadowCountLabel.BackgroundColor3 = Color3.fromRGB(38, 38, 38) 
+shadowCountLabel.TextColor3 = Color3.new(220, 125, 255)
+shadowCountLabel.Font = Enum.Font.SourceSans
 shadowCountLabel.TextSize = 24
 shadowCountLabel.Text = "Shadow Count: 0"
-shadowCountLabel.Visible = false
-
-local UIGradient = Instance.new("UIGradient")
-UIGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 100, 255)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180, 90, 180)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 100, 255))
-})
-UIGradient.Parent = shadowCountLabel
-
-spawn(function()
-    local rotation = 0
-    while wait() do
-        rotation = (rotation + 1) % 360
-        UIGradient.Rotation = rotation
-    end
-end)
-
-local Glow = Instance.new("ImageLabel")
-Glow.Name = "Glow"
-Glow.BackgroundTransparency = 1
-Glow.Position = UDim2.new(0.5, 0, 0.5, 0)
-Glow.Size = UDim2.new(1.2, 0, 1.2, 0)
-Glow.AnchorPoint = Vector2.new(0.5, 0.5)
-Glow.Image = "rbxassetid://7131946098"
-Glow.ImageColor3 = Color3.fromRGB(255, 100, 255)
-Glow.ImageTransparency = 0.8
-Glow.Parent = shadowCountLabel
 
 local corner = Instance.new("UICorner", shadowCountLabel)
-corner.CornerRadius = UDim.new(0, 15)
-
-local UIStroke = Instance.new("UIStroke")
-UIStroke.Color = Color3.fromRGB(255, 100, 255)
-UIStroke.Transparency = 0.4
-UIStroke.Thickness = 2
-UIStroke.Parent = shadowCountLabel
-
-local DropShadow = Instance.new("ImageLabel")
-DropShadow.Name = "DropShadow"
-DropShadow.BackgroundTransparency = 1
-DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-DropShadow.Size = UDim2.new(1.1, 0, 1.1, 0)
-DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-DropShadow.Image = "rbxassetid://7131946098"
-DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-DropShadow.ImageTransparency = 0.5
-DropShadow.ZIndex = -1
-DropShadow.Parent = shadowCountLabel
+corner.CornerRadius = UDim.new(0, 10)
 
 local function updateShadowCount()
     local count = #workspace.Shadows:GetChildren()
@@ -644,62 +603,37 @@ end)
 -- // // // Tabs Gui // // // --
 
 local Tabs = { -- https://lucide.dev/icons/
-    Home = Window:AddTab({ 
-        Title = "Home", 
-        Icon = "crown",
-        RightIcon = "sparkles",
-        TextColor3 = Color3.fromRGB(255, 100, 255)
-    }),
-    Exclusives = Window:AddTab({ 
-        Title = "Exclusives", 
-        Icon = "gem",
-        RightIcon = "star",
-        TextColor3 = Color3.fromRGB(255, 100, 255)
-    }),
-    Main = Window:AddTab({ 
-        Title = "Main", 
-        Icon = "settings",
-        TextColor3 = Color3.fromRGB(255, 100, 255)
-    }),
-    Items = Window:AddTab({ Title = "Items", Icon = "package", RightIcon = "box", TextColor3 = Color3.fromRGB(255, 128, 255) }),
-    Teleports = Window:AddTab({ Title = "Teleports", Icon = "map", RightIcon = "navigation", TextColor3 = Color3.fromRGB(255, 128, 255) }),
-    Misc = Window:AddTab({ Title = "Misc", Icon = "more-horizontal", RightIcon = "settings", TextColor3 = Color3.fromRGB(255, 128, 255) }),
-    Trade = Window:AddTab({ Title = "Trade", Icon = "repeat", RightIcon = "gift", TextColor3 = Color3.fromRGB(255, 128, 255) })
+    Home = Window:AddTab({ Title = "Home", Icon = "home" }),
+    Exclusives = Window:AddTab({ Title = "Exclusives", Icon = "heart" }),
+    Main = Window:AddTab({ Title = "Main", Icon = "list" }),
+    Items = Window:AddTab({ Title = "Items", Icon = "box" }),
+    Teleports = Window:AddTab({ Title = "Teleports", Icon = "map-pin" }),
+    Misc = Window:AddTab({ Title = "Misc", Icon = "file-text" }),
+    Trade = Window:AddTab({ Title = "Trade", Icon = "gift" })
 }
 
 local Options = Fluent.Options
 
 do
-    Tabs.Home:AddParagraph({
-        Title = "Welcome to Pinky God",
-        Content = [[
-Thank you for choosing Pinky God!
-
-Features:
-• Exclusive Shadow System
-• Advanced Fishing Tools
-• Premium Teleportation
-• VIP Support
-
-Version: 1.0.0
-Updated: ]] .. os.date("%d/%m/%Y")
+    Tabs.Home:AddButton({
+        Title = "Copy Discord link",
+        Description = "Join our main discord!",
+        Callback = function()
+            setclipboard("https://discord.gg/25ms")
+        end
     })
 
     -- // Exclusives Tab // --
     local sectionExclus = Tabs.Exclusives:AddSection("Exclusives Features")
-    local CountShadows = Tabs.Exclusives:AddToggle("CountShadows", {
-        Title = "Show Shadow Counter",
-        Default = false
-    })
+    local CountShadows = Tabs.Exclusives:AddToggle("CountShadows", {Title = "Show Count Shadows", Default = false })
     CountShadows:OnChanged(function()
         local RequireRod = PlayerGui.hud.safezone.equipment.rods.scroll.safezone:FindFirstChild("Rod Of The Depths")
-        if not RequireRod then 
-            CountShadows:SetValue(false)
-            if Options.CountShadows.Value then
-                ShowNotification("Requirement: Rod Of The Depths") 
-            end
+        if not RequireRod then return ShowNotification("Requirement Rod Of The Depths") end
+        if Options.CountShadows.Value == true then
+            shadowCountLabel.Visible = true
+        else
+            shadowCountLabel.Visible = false
         end
-        shadowCountLabel.Visible = Options.CountShadows.Value
     end)
     local RodDupe = Tabs.Exclusives:AddToggle("RodDupe", {Title = "Rod Of The Depths Spam", Default = false })
     RodDupe:OnChanged(function()
@@ -1171,15 +1105,60 @@ Updated: ]] .. os.date("%d/%m/%Y")
     end)
 
     local IdentityHiderUI = Tabs.Misc:AddToggle("IdentityHiderUI", {Title = "Protect Identity", Default = false })    
+
+    -- Store original values
+    local originalValues = {
+        streak = "",
+        level = "",
+        user = "",
+        coins = "",
+        lvl = ""
+    }
+
     IdentityHiderUI:OnChanged(function()
-        while Options.IdentityHiderUI.Value == true do
-            if UserPlayer:FindFirstChild("streak") then UserPlayer.streak.Text = "HIDDEN" end
-            if UserPlayer:FindFirstChild("level") then UserPlayer.level.Text = "Level: HIDDEN" end
-            if UserPlayer:FindFirstChild("level") then UserPlayer.user.Text = "HIDDEN" end
+        if Options.IdentityHiderUI.Value then
+            -- Store original values before hiding
+            if UserPlayer:FindFirstChild("streak") then 
+                originalValues.streak = UserPlayer.streak.Text
+                UserPlayer.streak.Text = "HIDDEN" 
+            end
+            if UserPlayer:FindFirstChild("level") then 
+                originalValues.level = UserPlayer.level.Text
+                UserPlayer.level.Text = "Level: HIDDEN" 
+            end
+            if UserPlayer:FindFirstChild("user") then 
+                originalValues.user = UserPlayer.user.Text
+                UserPlayer.user.Text = "HIDDEN" 
+            end
+            
             local hud = LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("hud"):WaitForChild("safezone")
-            if hud:FindFirstChild("coins") then hud.coins.Text = "HIDDEN$" end
-            if hud:FindFirstChild("lvl") then hud.lvl.Text = "HIDDEN LVL" end
-            task.wait(0.01)
+            if hud:FindFirstChild("coins") then 
+                originalValues.coins = hud.coins.Text
+                hud.coins.Text = "HIDDEN$" 
+            end
+            if hud:FindFirstChild("lvl") then 
+                originalValues.lvl = hud.lvl.Text
+                hud.lvl.Text = "HIDDEN LVL" 
+            end
+        else
+            -- Restore original values
+            if UserPlayer:FindFirstChild("streak") then 
+                UserPlayer.streak.Text = originalValues.streak 
+            end
+            if UserPlayer:FindFirstChild("level") then 
+                UserPlayer.level.Text = originalValues.level
+            end
+            if UserPlayer:FindFirstChild("user") then 
+                UserPlayer.user.Text = originalValues.user
+            end
+            
+            local hud = LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("hud"):WaitForChild("safezone")
+            if hud:FindFirstChild("coins") then 
+                hud.coins.Text = originalValues.coins
+            end
+            if hud:FindFirstChild("lvl") then 
+                hud.lvl.Text = originalValues.lvl
+            end
         end
     end)
 
@@ -1199,20 +1178,42 @@ Updated: ]] .. os.date("%d/%m/%Y")
     })
 
     local section = Tabs.Trade:AddSection("Coming Soon...")
+
+    -- Add the Mod Detection section here, right after your auto fishing toggles
+    local section = Tabs.Main:AddSection("Mod Detection")
+    
+    local ModDetector = Tabs.Main:AddToggle("ModDetector", {
+        Title = "Auto Mod Detector",
+        Default = false
+    })
+
+    ModDetector:OnChanged(function()
+        ModDetectionEnabled = Options.ModDetector.Value
+        if ModDetectionEnabled then
+            StartModDetection()
+            ShowNotification("Mod Detection Enabled")
+        else
+            StopModDetection()
+            ShowNotification("Mod Detection Disabled")
+        end
+    end)
+
+    Tabs.Main:AddButton({
+        Title = "Check For Mods",
+        Description = "Manually check if any mods are in the server",
+        Callback = function()
+            if CheckForMods() then
+                ShowNotification("⚠️ Mods found in server!")
+            else
+                ShowNotification("✅ No mods detected in server")
+            end
+        end
+    })
 end
 
 Window:SelectTab(1)
 Fluent:Notify({
-    Title = "Pinky God",
-    Content = "Successfully Loaded",
-    Duration = 3,
-    Theme = "Dark",
-    TitleColor = Color3.fromRGB(255, 100, 255),
-    Icon = "rbxassetid://7072718412",
-    Actions = {
-        Ignore = {
-            Name = "OK",
-            Callback = function() end
-        }
-    }
+    Title = "Pinky",
+    Content = "Executed!",
+    Duration = 8
 })
